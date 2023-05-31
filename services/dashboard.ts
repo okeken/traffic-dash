@@ -1,10 +1,16 @@
-export const fetchDashboard = async () => {
-  try {
-    const { data = [] } = await (await fetch("/api/traffic")).json();
+import prisma from "../lib/prisma";
+export const fetchDashboard = async (): Promise<[][] | string[][]> => {
+  const data =
+    ((await prisma.traffic.findMany({
+      include: {
+        pages: true,
+      },
+    })) as []) ?? [];
 
-    return [data, null];
+  try {
+    return [data, []];
   } catch (e) {
     console.log(e, "Erro Fe");
-    return [[], "Error Fetching  Data" + e];
+    return [[], ["Error Fetching  Data" + e]];
   }
 };
