@@ -15,19 +15,19 @@ export default async function handler(
     const allTraffic = (await prisma.allTraffic.findMany())[0]?.totalCount ?? 0;
     const traffic = await prisma.traffic.findMany();
     const google = traffic.filter((data) =>
-      data.organicSource.toLocaleLowerCase().includes("google")
+      data.referrer.toLocaleLowerCase().includes("google")
     );
 
     const bing = traffic.filter((data) =>
-      data.organicSource.toLocaleLowerCase().includes("bing")
+      data.referrer.toLocaleLowerCase().includes("bing")
     );
 
     const yahoo = traffic.filter((data) =>
-      data.organicSource.toLocaleLowerCase().includes("yahoo")
+      data.referrer.toLocaleLowerCase().includes("yahoo")
     );
 
     const directTraffic = traffic.filter((data) =>
-      data.organicSource.toLocaleLowerCase().includes("direct traffic")
+      data.referrer.toLocaleLowerCase().includes("direct")
     );
 
     const data = {
@@ -39,6 +39,6 @@ export default async function handler(
     };
     res.status(200).json({ data });
   } catch (e) {
-    return res.status(500).json({ error: "Serer Error" });
+    return res.status(500).json({ error: "Server Error" });
   }
 }
